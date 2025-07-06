@@ -1,0 +1,1 @@
+export { OWCLoginComponent } from './login-component.js'; 

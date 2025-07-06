@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OWC Library Demo - Login Component</title>
+  <style>
+    :root {
+      --owc-primary-color: #3b82f6;
+      --owc-bg-color: #f8fafc;
+      --owc-card-bg: #ffffff;
+      --owc-text-color: #1f2937;
+      --owc-text-secondary: #6b7280;
+      --owc-border-color: #e5e7eb;
+      --owc-error-color: #dc2626;
+      --owc-success-color: #059669;
+      --owc-button-bg: #ffffff;
+      --owc-button-text-color: #1f2937;
+      --owc-button-hover-bg: #f8fafc;
+    }
+
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--owc-bg-color);
+      color: var(--owc-text-color);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .header h1 {
+      color: var(--owc-primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    .demo-section {
+      background: var(--owc-card-bg);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    .demo-section h2 {
+      color: var(--owc-primary-color);
+      margin-top: 0;
+    }
+
+    .event-log {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 6px;
+      padding: 1rem;
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+
+    .event-log .event {
+      margin-bottom: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+
+    .event-log .event.success {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .event-log .event.error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .event-log .event.info {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .clear-log {
+      background: var(--owc-primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .clear-log:hover {
+      background: #2563eb;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--owc-primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .dark-theme {
+      --owc-primary-color: #60a5fa;
+      --owc-bg-color: #1f2937;
+      --owc-card-bg: #374151;
+      --owc-text-color: #f9fafb;
+      --owc-text-secondary: #9ca3af;
+      --owc-border-color: #4b5563;
+      --owc-button-bg: #374151;
+      --owc-button-text-color: #f9fafb;
+      --owc-button-hover-bg: #4b5563;
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+  
+  <div class="container">
+    <div class="header">
+      <h1>OWC Library Demo</h1>
+      <p>Open Web Components for Cardano & IPFS</p>
+    </div>
+
+    <div class="demo-section">
+      <h2>Login Component</h2>
+      <p>Connect your Cardano wallet and create an encrypted profile stored on IPFS.</p>
+      
+      <!-- Login Component -->
+      <owc-login 
+        id="login-component"
+        ipfs-gateway="https://ipfs.io"
+        theme="light"
+      ></owc-login>
+    </div>
+
+    <div class="demo-section">
+      <h2>Event Log</h2>
+      <p>Watch real-time events from the login component:</p>
+      
+      <div id="event-log" class="event-log">
+        <div class="event info">Waiting for wallet connection...</div>
+      </div>
+      
+      <button class="clear-log" onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <div class="demo-section">
+      <h2>Component Properties</h2>
+      <p>Configure the login component:</p>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+        <div>
+          <label for="ipfs-gateway">IPFS Gateway:</label>
+          <select id="ipfs-gateway" onchange="updateComponent()">
+            <option value="https://ipfs.io">IPFS.io (Public)</option>
+            <option value="https://gateway.pinata.cloud">Pinata Gateway</option>
+            <option value="https://dweb.link">dweb.link</option>
+          </select>
+        </div>
+        
+        <div>
+          <label for="ipfs-api-key">API Key (optional):</label>
+          <input 
+            type="text" 
+            id="ipfs-api-key" 
+            placeholder="Enter API key"
+            onchange="updateComponent()"
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // Import the login component
+    import '@owc/login-component';
+
+    // Get the login component element
+    const loginComponent = document.getElementById('login-component');
+    const eventLog = document.getElementById('event-log');
+
+    // Function to add event to log
+    function addEvent(message, type = 'info') {
+      const eventDiv = document.createElement('div');
+      eventDiv.className = `event ${type}`;
+      eventDiv.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      eventLog.appendChild(eventDiv);
+      eventLog.scrollTop = eventLog.scrollHeight;
+    }
+
+    // Function to clear log
+    window.clearLog = function() {
+      eventLog.innerHTML = '<div class="event info">Log cleared...</div>';
+    };
+
+    // Function to toggle theme
+    window.toggleTheme = function() {
+      document.body.classList.toggle('dark-theme');
+      const isDark = document.body.classList.contains('dark-theme');
+      loginComponent.setAttribute('theme', isDark ? 'dark' : 'light');
+      addEvent(`Theme changed to ${isDark ? 'dark' : 'light'}`, 'info');
+    };
+
+    // Function to update component properties
+    window.updateComponent = function() {
+      const gateway = document.getElementById('ipfs-gateway').value;
+      const apiKey = document.getElementById('ipfs-api-key').value;
+      
+      loginComponent.setAttribute('ipfs-gateway', gateway);
+      if (apiKey) {
+        loginComponent.setAttribute('ipfs-api-key', apiKey);
+      } else {
+        loginComponent.removeAttribute('ipfs-api-key');
+      }
+      
+      addEvent(`IPFS gateway updated to: ${gateway}`, 'info');
+    };
+
+    // Listen for wallet connection events
+    loginComponent.addEventListener('wallet-connected', (event) => {
+      const { address, networkId, balance } = event.detail;
+      addEvent(`Wallet connected! Address: ${address.substring(0, 20)}...`, 'success');
+      addEvent(`Network: ${networkId === 1 ? 'Mainnet' : 'Testnet'}`, 'info');
+      if (balance) {
+        addEvent(`Balance: ${(parseInt(balance) / 1000000).toFixed(6)} ADA`, 'info');
+      }
+    });
+
+    // Listen for wallet disconnection events
+    loginComponent.addEventListener('wallet-disconnected', () => {
+      addEvent('Wallet disconnected', 'info');
+    });
+
+    // Listen for profile save events
+    loginComponent.addEventListener('profile-saved', (event) => {
+      const { profile, cid } = event.detail;
+      addEvent(`Profile saved successfully!`, 'success');
+      addEvent(`User ID: ${profile.id}`, 'info');
+      addEvent(`IPFS CID: ${cid}`, 'info');
+      addEvent(`Username: ${profile.username || 'Not set'}`, 'info');
+    });
+
+    // Add initial event
+    addEvent('Demo page loaded successfully', 'success');
+  </script>
+</body>
+</html> 

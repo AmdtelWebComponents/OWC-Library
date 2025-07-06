@@ -1,0 +1,23 @@
+{
+  "name": "@owc/storybook",
+  "version": "0.1.0",
+  "description": "Storybook for OWC components",
+  "scripts": {
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test-storybook": "test-storybook"
+  },
+  "dependencies": {
+    "@owc/login-component": "file:../login-component",
+    "@owc/shared": "file:../shared"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.0.0",
+    "@storybook/addon-interactions": "^7.0.0",
+    "@storybook/addon-links": "^7.0.0",
+    "@storybook/blocks": "^7.0.0",
+    "@storybook/testing-library": "^0.2.0",
+    "@storybook/web-components": "^7.0.0",
+    "storybook": "^7.0.0"
+  }
+} 

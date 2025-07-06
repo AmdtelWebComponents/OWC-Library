@@ -1,0 +1,40 @@
+{
+  "name": "@owc/shared",
+  "version": "0.1.0",
+  "description": "Shared utilities and types for OWC components",
+  "type": "module",
+  "main": "../../dist/packages/shared/index.js",
+  "module": "../../dist/packages/shared/index.js",
+  "types": "../../dist/packages/shared/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "../../dist/packages/shared/index.js",
+      "types": "../../dist/packages/shared/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "dev": "vite --port 3002",
+    "build": "vite build",
+    "build:watch": "vite build --watch",
+    "test": "web-test-runner test/**/*.test.ts --node-resolve",
+    "lint": "eslint src/**/*.ts"
+  },
+  "dependencies": {
+    "lit": "^3.0.0"
+  },
+  "devDependencies": {
+    "@open-wc/testing": "^3.0.0",
+    "@web/test-runner": "^0.16.0",
+    "vite": "^5.0.0",
+    "vite-plugin-dts": "^3.0.0"
+  },
+  "keywords": [
+    "web-components",
+    "utilities",
+    "types",
+    "shared"
+  ]
+} 
