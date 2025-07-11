@@ -26,16 +26,17 @@
     "lint:fix": "eslint src/**/*.ts --fix"
   },
   "dependencies": {
-    "lit": "^3.0.0",
+    "@owc/shared": "file:../shared",
     "ipfs-http-client": "^60.0.0",
-    "@owc/shared": "file:../shared"
+    "lit": "^3.0.0"
   },
   "devDependencies": {
     "@open-wc/testing": "^3.0.0",
     "@web/test-runner": "^0.16.0",
     "@web/test-runner-commands": "^0.8.0",
     "vite": "^5.0.0",
-    "vite-plugin-dts": "^3.0.0"
+    "vite-plugin-dts": "^3.0.0",
+    "vite-plugin-wasm": "^3.4.1"
   },
   "keywords": [
     "web-components",
@@ -45,4 +46,4 @@
     "ipfs",
     "lit"
   ]
-} 
+}

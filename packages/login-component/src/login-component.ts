@@ -11,6 +11,10 @@ import {
   generateUserId,
   formatCardanoBalance 
 } from '@owc/shared';
+import { Address } from '@emurgo/cardano-serialization-lib-browser';
+// Polyfill Buffer for browser if needed
+// @ts-ignore
+import { Buffer } from 'buffer';
 
 @customElement('owc-login')
 export class OWCLoginComponent extends LitElement {
@@ -289,25 +293,22 @@ export class OWCLoginComponent extends LitElement {
           <h2>Wallet Connected</h2>
           <p>Your wallet is successfully connected</p>
         </div>
-
         <div class="wallet-info">
           <h3>Wallet Information</h3>
-          <p><strong>Address:</strong> ${this.connectionState.address}</p>
+          <p><strong>Address:</strong> ${this.connectionState.address ? this.bech32Address(this.connectionState.address) : 'No address available'}</p>
           <p><strong>Network:</strong> ${this.connectionState.networkId === 1 ? 'Mainnet' : 'Testnet'}</p>
           ${this.connectionState.balance ? html`
             <p><strong>Balance:</strong> ${formatCardanoBalance(this.connectionState.balance)}</p>
           ` : ''}
         </div>
-
         ${this.showProfileForm ? this.renderProfileForm() : html`
           <button 
             class="submit-button" 
-            @click=${this.showProfileForm = true}
+            @click=${() => { this.showProfileForm = true; }}
           >
             Create Profile
           </button>
         `}
-
         <button 
           class="disconnect-button" 
           @click=${this.disconnectWallet}
@@ -369,67 +370,98 @@ export class OWCLoginComponent extends LitElement {
     `;
   }
 
+  private bech32Address(addr: string): string {
+    try {
+      // Try hex decode first
+      let bytes: Uint8Array;
+      if (/^[0-9a-fA-F]+$/.test(addr) && addr.length % 2 === 0) {
+        bytes = Uint8Array.from(Buffer.from(addr, 'hex'));
+      } else {
+        // Try base64 decode (CIP-30 spec: addresses are CBOR bytes, usually base16, but some wallets use base64)
+        bytes = Uint8Array.from(window.atob(addr), c => c.charCodeAt(0));
+      }
+      return Address.from_bytes(bytes).to_bech32();
+    } catch (e) {
+      return addr; // fallback to raw if conversion fails
+    }
+  }
+
   private async connectWallet() {
     this.isLoading = true;
     this.errorMessage = '';
 
     try {
-      // Check if any Cardano wallet is available
       if (!window.cardano) {
-        throw new Error('No Cardano wallet detected. Please install Nami, Eternl, Flint, or Yoroi wallet.');
+        throw new Error('No Cardano wallet detected. Please install Nami, Eternl, Flint, Lace, or Yoroi wallet.');
       }
-
-      // Get available wallets
       const availableWallets = Object.keys(window.cardano!).filter(
         key => window.cardano![key] && window.cardano![key].enable
       );
-
       if (availableWallets.length === 0) {
-        throw new Error('No Cardano wallet detected. Please install Nami, Eternl, Flint, or Yoroi wallet.');
+        throw new Error('No Cardano wallet detected. Please install Nami, Eternl, Flint, Lace, or Yoroi wallet.');
       }
-
-      // For now, use the first available wallet (you can add wallet selection UI later)
       const walletName = availableWallets[0]!;
       const wallet = window.cardano![walletName]!;
-
-      // Enable the wallet
-      await wallet.enable();
-
-      // Get wallet information
-      const address = await wallet.getUsedAddresses();
-      const networkId = await wallet.getNetworkId();
-      const balance = await wallet.getBalance();
-
-              this.connectionState = {
+      // Enable the wallet and get the API object
+      const walletApi = await wallet.enable();
+      let address: string[] = [];
+      let networkId: number;
+      let balance: string;
+      try {
+        if (typeof walletApi.getUsedAddresses === 'function') {
+          address = await walletApi.getUsedAddresses();
+          if (address.length === 0 && typeof walletApi.getUnusedAddresses === 'function') {
+            address = await walletApi.getUnusedAddresses();
+          }
+        } else if (typeof walletApi.getAddresses === 'function') {
+          const addresses = await walletApi.getAddresses();
+          address = addresses.map((addr: any) => addr.address);
+        } else {
+          throw new Error('Wallet does not support address retrieval');
+        }
+        if (typeof walletApi.getNetworkId === 'function') {
+          networkId = await walletApi.getNetworkId();
+        } else {
+          networkId = 1;
+        }
+        if (typeof walletApi.getBalance === 'function') {
+          balance = await walletApi.getBalance();
+        } else {
+          balance = '0';
+        }
+        this.connectionState = {
           connected: true,
           wallet: {
             name: walletName,
             icon: wallet.icon || '',
             version: wallet.version || '1.0.0',
-            enable: wallet.enable.bind(wallet),
-            isEnabled: wallet.isEnabled.bind(wallet),
-            getNetworkId: wallet.getNetworkId.bind(wallet),
-            getBalance: wallet.getBalance.bind(wallet),
-            getUsedAddresses: wallet.getUsedAddresses.bind(wallet),
-            getUnusedAddresses: wallet.getUnusedAddresses.bind(wallet),
-            getChangeAddress: wallet.getChangeAddress.bind(wallet),
-            getRewardAddresses: wallet.getRewardAddresses.bind(wallet),
-            signTx: wallet.signTx.bind(wallet),
-            signData: wallet.signData.bind(wallet),
-            submitTx: wallet.submitTx.bind(wallet)
+            enable: walletApi.enable?.bind(walletApi) || wallet.enable.bind(wallet),
+            isEnabled: walletApi.isEnabled?.bind(walletApi) || wallet.isEnabled.bind(wallet),
+            getNetworkId: walletApi.getNetworkId?.bind(walletApi) || (() => Promise.resolve(1)),
+            getBalance: walletApi.getBalance?.bind(walletApi) || (() => Promise.resolve('0')),
+            getUsedAddresses: walletApi.getUsedAddresses?.bind(walletApi) || walletApi.getAddresses?.bind(walletApi),
+            getUnusedAddresses: walletApi.getUnusedAddresses?.bind(walletApi) || (() => Promise.resolve([])),
+            getChangeAddress: walletApi.getChangeAddress?.bind(walletApi) || (() => Promise.resolve('')),
+            getRewardAddresses: walletApi.getRewardAddresses?.bind(walletApi) || (() => Promise.resolve([])),
+            signTx: walletApi.signTx?.bind(walletApi) || (() => Promise.reject(new Error('Signing not supported'))),
+            signData: walletApi.signData?.bind(walletApi) || (() => Promise.reject(new Error('Data signing not supported'))),
+            submitTx: walletApi.submitTx?.bind(walletApi) || (() => Promise.reject(new Error('Transaction submission not supported')))
           },
           address: address[0] || '',
           networkId,
           balance
         };
-
-      // Dispatch custom event
-      this.dispatchEvent(new CustomEvent('wallet-connected', {
-        detail: this.connectionState,
-        bubbles: true,
-        composed: true
-      }));
+        this.dispatchEvent(new CustomEvent('wallet-connected', {
+          detail: this.connectionState,
+          bubbles: true,
+          composed: true
+        }));
+      } catch (walletError) {
+        console.error('Error getting wallet information:', walletError);
+        throw new Error(`Failed to get wallet information: ${walletError instanceof Error ? walletError.message : 'Unknown error'}`);
+      }
     } catch (error) {
+      console.error('Wallet connection error:', error);
       this.errorMessage = `Failed to connect wallet: ${error instanceof Error ? error.message : 'Unknown error'}`;
     } finally {
       this.isLoading = false;

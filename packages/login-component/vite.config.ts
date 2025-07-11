@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import { resolve } from 'path';
+import wasm from 'vite-plugin-wasm';
 
 export default defineConfig({
   // Development server configuration
@@ -36,6 +37,7 @@ export default defineConfig({
     }
   },
   plugins: [
+    wasm(),
     dts({
       insertTypesEntry: true,
       rollupTypes: true

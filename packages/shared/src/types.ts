@@ -28,6 +28,8 @@ export interface NativeCardanoWallet {
   signTx: (tx: string, partialSign: boolean) => Promise<string>;
   signData: (addr: string, payload: string) => Promise<string>;
   submitTx: (tx: string) => Promise<string>;
+  // Lace wallet specific methods
+  getAddresses?: () => Promise<Array<{ address: string }>>;
   icon?: string;
   version?: string;
 }
