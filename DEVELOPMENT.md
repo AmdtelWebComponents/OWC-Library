@@ -191,7 +191,7 @@ packages/shared/
    ```html
    <!-- In demo/index.html -->
    <script type="module">
-     import '@owc/my-component';
+     import '@amdtel/my-component';
    </script>
    <my-component></my-component>
    ```
@@ -200,7 +200,7 @@ packages/shared/
 
 ## 🎨 Styling
 
-- **CSS Variables**: Use `--owc-*` variables for theming
+- **CSS Variables**: Use `--amdtel-*` variables for theming
 - **Dark Theme**: Toggle with the theme button in demo
 - **Responsive**: Components are mobile-friendly
 

@@ -1,5 +1,5 @@
 {
-  "name": "@owc/login-component",
+  "name": "@amdtel/login-component",
   "version": "0.1.0",
   "description": "Cardano wallet login component with IPFS profile storage",
   "type": "module",
@@ -26,7 +26,7 @@
     "lint:fix": "eslint src/**/*.ts --fix"
   },
   "dependencies": {
-    "@owc/shared": "file:../shared",
+    "@amdtel/shared": "file:../shared",
     "ipfs-http-client": "^60.0.0",
     "lit": "^3.0.0"
   },

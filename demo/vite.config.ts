@@ -10,7 +10,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@owc/login-component': resolve(__dirname, '../dist/packages/login-component/index.js'),
-      '@owc/shared': resolve(__dirname, '../dist/packages/shared/index.js')
+      '@amdtel/shared': resolve(__dirname, '../dist/packages/shared/index.js')
     }
   }
 }); 

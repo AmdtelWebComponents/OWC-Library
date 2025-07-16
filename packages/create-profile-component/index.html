@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Profile Component - Development</title>
+  <link rel="stylesheet" href="https://unpkg.com/open-props"/>
+  <link rel="stylesheet" href="https://unpkg.com/open-props/normalize.min.css"/>
+  <style>
+    body {
+      margin: 0;
+      padding: var(--size-fluid-3);
+      font-family: var(--font-sans, system-ui, sans-serif);
+      background: var(--surface-1);
+      color: var(--gray-8);
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: var(--size-6);
+    }
+    .header h1 {
+      color: var(--indigo-7);
+      margin-bottom: var(--size-2);
+    }
+    .header p {
+      color: var(--gray-6);
+      margin: 0;
+    }
+    .demo-section {
+      background: var(--surface-2);
+      padding: var(--size-fluid-3);
+      border-radius: var(--radius-3);
+      box-shadow: var(--shadow-2);
+      margin-bottom: var(--size-6);
+    }
+    .demo-section h2 {
+      margin-top: 0;
+      color: var(--indigo-7);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Create Profile Component Development</h1>
+      <p>Edit the component source and see changes instantly!</p>
+    </div>
+    <div class="demo-section">
+      <h2>Component Preview</h2>
+      <amdtel-create-profile walletAddress="test_wallet_address"></amdtel-create-profile>
+    </div>
+  </div>
+  <script type="module">
+    import './src/create-profile-component.ts';
+  </script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 {
-    "name": "@owc/cardano-components",
+    "name": "@amdtel/cardano-components",
     "version": "0.1.0",
     "description": "Open Web Components library for Cardano and IPFS decentralized applications",
     "private": true,
@@ -9,6 +9,7 @@
     "scripts": {
         "dev": "echo 'Use individual package dev servers: npm run dev:login or npm run dev:shared'",
         "dev:login": "cd packages/login-component && npm run dev",
+        "dev:create-profile": "cd packages/create-profile-component && npm run dev",
         "dev:shared": "cd packages/shared && npm run dev",
         "dev:demo": "cd demo && npm run dev",
         "build:watch": "concurrently \"cd packages/shared && npm run build:watch\" \"cd packages/login-component && npm run build:watch\"",
@@ -31,6 +32,7 @@
         "@open-wc/eslint-config": "^12.0.0",
         "@open-wc/testing": "^3.0.0",
         "@open-wc/testing-helpers": "^2.0.0",
+        "@types/estree": "^1.0.8",
         "@typescript-eslint/eslint-plugin": "^6.0.0",
         "@typescript-eslint/parser": "^6.0.0",
         "@web/test-runner": "^0.16.0",

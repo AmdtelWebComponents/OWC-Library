@@ -3,202 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OWC Library Demo - Login Component</title>
+  <title>AMDTEL Library Demo - Login Component</title>
+  <link rel="stylesheet" href="https://unpkg.com/open-props"/>
+  <link rel="stylesheet" href="https://unpkg.com/open-props/normalize.min.css"/>
   <style>
-    :root {
-      --owc-primary-color: #3b82f6;
-      --owc-bg-color: #f8fafc;
-      --owc-card-bg: #ffffff;
-      --owc-text-color: #1f2937;
-      --owc-text-secondary: #6b7280;
-      --owc-border-color: #e5e7eb;
-      --owc-error-color: #dc2626;
-      --owc-success-color: #059669;
-      --owc-button-bg: #ffffff;
-      --owc-button-text-color: #1f2937;
-      --owc-button-hover-bg: #f8fafc;
-    }
-
     body {
       margin: 0;
-      padding: 2rem;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--owc-bg-color);
-      color: var(--owc-text-color);
+      padding: var(--size-fluid-3);
+      font-family: var(--font-sans, system-ui, sans-serif);
+      background: var(--surface-1);
+      color: var(--gray-8);
     }
-
     .container {
       max-width: 800px;
       margin: 0 auto;
     }
-
     .header {
       text-align: center;
-      margin-bottom: 3rem;
+      margin-bottom: var(--size-7);
     }
-
     .header h1 {
-      color: var(--owc-primary-color);
-      margin-bottom: 0.5rem;
+      color: var(--indigo-7);
+      margin-bottom: var(--size-2);
     }
-
     .header p {
-      color: #666;
-      font-size: 1.1rem;
+      color: var(--gray-6);
+      font-size: var(--font-size-2);
+      margin: 0;
     }
-
     .demo-section {
-      background: var(--owc-card-bg);
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      margin-bottom: 2rem;
+      background: var(--surface-2);
+      padding: var(--size-fluid-3);
+      border-radius: var(--radius-3);
+      box-shadow: var(--shadow-2);
+      margin-bottom: var(--size-7);
     }
-
     .demo-section h2 {
-      color: var(--owc-primary-color);
+      color: var(--indigo-7);
       margin-top: 0;
     }
-
     .event-log {
-      background: #f8f9fa;
-      border: 1px solid #e9ecef;
-      border-radius: 6px;
-      padding: 1rem;
+      background: var(--gray-0);
+      border: 1px solid var(--gray-3);
+      border-radius: var(--radius-2);
+      padding: var(--size-3);
       max-height: 300px;
       overflow-y: auto;
-      font-family: 'Courier New', monospace;
-      font-size: 0.9rem;
+      font-family: var(--font-mono, monospace);
+      font-size: var(--font-size-1);
     }
-
     .event-log .event {
-      margin-bottom: 0.5rem;
-      padding: 0.5rem;
-      border-radius: 4px;
+      margin-bottom: var(--size-2);
+      padding: var(--size-2);
+      border-radius: var(--radius-1);
     }
-
     .event-log .event.success {
-      background: #d1fae5;
-      color: #065f46;
+      background: var(--green-0);
+      color: var(--green-7);
     }
-
     .event-log .event.error {
-      background: #fee2e2;
-      color: #991b1b;
+      background: var(--red-0);
+      color: var(--red-7);
     }
-
     .event-log .event.info {
-      background: #dbeafe;
-      color: #1e40af;
+      background: var(--blue-0);
+      color: var(--blue-7);
     }
-
     .clear-log {
-      background: var(--owc-primary-color);
+      background: var(--indigo-7);
       color: white;
       border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
+      padding: var(--size-2) var(--size-4);
+      border-radius: var(--radius-2);
       cursor: pointer;
-      margin-top: 1rem;
+      margin-top: var(--size-3);
     }
-
     .clear-log:hover {
-      background: #2563eb;
+      background: var(--indigo-8);
     }
-
     .theme-toggle {
       position: fixed;
-      top: 1rem;
-      right: 1rem;
-      background: var(--owc-primary-color);
+      top: var(--size-3);
+      right: var(--size-3);
+      background: var(--indigo-7);
       color: white;
       border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
+      padding: var(--size-2) var(--size-4);
+      border-radius: var(--radius-2);
       cursor: pointer;
     }
-
     .dark-theme {
-      --owc-primary-color: #60a5fa;
-      --owc-bg-color: #1f2937;
-      --owc-card-bg: #374151;
-      --owc-text-color: #f9fafb;
-      --owc-text-secondary: #9ca3af;
-      --owc-border-color: #4b5563;
-      --owc-button-bg: #374151;
-      --owc-button-text-color: #f9fafb;
-      --owc-button-hover-bg: #4b5563;
+      background: var(--gray-9);
+      color: var(--gray-1);
     }
   </style>
 </head>
 <body>
   <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
-  
   <div class="container">
     <div class="header">
-      <h1>OWC Library Demo</h1>
+      <h1>AMDTEL Library Demo</h1>
       <p>Open Web Components for Cardano & IPFS</p>
     </div>
-
     <div class="demo-section">
       <h2>Login Component</h2>
       <p>Connect your Cardano wallet and create an encrypted profile stored on IPFS.</p>
-      
-      <!-- Login Component -->
-      <owc-login 
+      <amdtel-login 
         id="login-component"
         ipfs-gateway="https://ipfs.io"
         theme="light"
-      ></owc-login>
+      ></amdtel-login>
     </div>
-
+    <div class="demo-section">
+      <h2>Create Profile Component</h2>
+      <p>Standalone profile creation form for Cardano dApps.</p>
+      <amdtel-create-profile walletAddress="test_wallet_address"></amdtel-create-profile>
+    </div>
     <div class="demo-section">
       <h2>Event Log</h2>
       <p>Watch real-time events from the login component:</p>
-      
       <div id="event-log" class="event-log">
         <div class="event info">Waiting for wallet connection...</div>
       </div>
-      
       <button class="clear-log" onclick="clearLog()">Clear Log</button>
     </div>
-
-    <div class="demo-section">
-      <h2>Component Properties</h2>
-      <p>Configure the login component:</p>
-      
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
-        <div>
-          <label for="ipfs-gateway">IPFS Gateway:</label>
-          <select id="ipfs-gateway" onchange="updateComponent()">
-            <option value="https://ipfs.io">IPFS.io (Public)</option>
-            <option value="https://gateway.pinata.cloud">Pinata Gateway</option>
-            <option value="https://dweb.link">dweb.link</option>
-          </select>
-        </div>
-        
-        <div>
-          <label for="ipfs-api-key">API Key (optional):</label>
-          <input 
-            type="text" 
-            id="ipfs-api-key" 
-            placeholder="Enter API key"
-            onchange="updateComponent()"
-          >
-        </div>
-      </div>
-    </div>
   </div>
-
   <script type="module">
-    // Import the login component
-    import '@owc/login-component';
-
-    // Get the login component element
+    import '@amdtel/login-component';
+    import '@amdtel/create-profile-component';
     const loginComponent = document.getElementById('login-component');
     const eventLog = document.getElementById('event-log');
-
-    // Function to add event to log
     function addEvent(message, type = 'info') {
       const eventDiv = document.createElement('div');
       eventDiv.className = `event ${type}`;
@@ -206,61 +140,24 @@
       eventLog.appendChild(eventDiv);
       eventLog.scrollTop = eventLog.scrollHeight;
     }
-
-    // Function to clear log
     window.clearLog = function() {
       eventLog.innerHTML = '<div class="event info">Log cleared...</div>';
     };
-
-    // Function to toggle theme
     window.toggleTheme = function() {
       document.body.classList.toggle('dark-theme');
       const isDark = document.body.classList.contains('dark-theme');
       loginComponent.setAttribute('theme', isDark ? 'dark' : 'light');
       addEvent(`Theme changed to ${isDark ? 'dark' : 'light'}`, 'info');
     };
-
-    // Function to update component properties
-    window.updateComponent = function() {
-      const gateway = document.getElementById('ipfs-gateway').value;
-      const apiKey = document.getElementById('ipfs-api-key').value;
-      
-      loginComponent.setAttribute('ipfs-gateway', gateway);
-      if (apiKey) {
-        loginComponent.setAttribute('ipfs-api-key', apiKey);
-      } else {
-        loginComponent.removeAttribute('ipfs-api-key');
-      }
-      
-      addEvent(`IPFS gateway updated to: ${gateway}`, 'info');
-    };
-
-    // Listen for wallet connection events
     loginComponent.addEventListener('wallet-connected', (event) => {
-      const { address, networkId, balance } = event.detail;
-      addEvent(`Wallet connected! Address: ${address.substring(0, 20)}...`, 'success');
-      addEvent(`Network: ${networkId === 1 ? 'Mainnet' : 'Testnet'}`, 'info');
-      if (balance) {
-        addEvent(`Balance: ${(parseInt(balance) / 1000000).toFixed(6)} ADA`, 'info');
-      }
+      addEvent('Wallet connected: ' + JSON.stringify(event.detail), 'success');
     });
-
-    // Listen for wallet disconnection events
-    loginComponent.addEventListener('wallet-disconnected', () => {
-      addEvent('Wallet disconnected', 'info');
-    });
-
-    // Listen for profile save events
     loginComponent.addEventListener('profile-saved', (event) => {
-      const { profile, cid } = event.detail;
-      addEvent(`Profile saved successfully!`, 'success');
-      addEvent(`User ID: ${profile.id}`, 'info');
-      addEvent(`IPFS CID: ${cid}`, 'info');
-      addEvent(`Username: ${profile.username || 'Not set'}`, 'info');
+      addEvent('Profile saved: ' + JSON.stringify(event.detail), 'success');
     });
-
-    // Add initial event
-    addEvent('Demo page loaded successfully', 'success');
+    loginComponent.addEventListener('error', (event) => {
+      addEvent('Error: ' + event.detail, 'error');
+    });
   </script>
 </body>
 </html> 

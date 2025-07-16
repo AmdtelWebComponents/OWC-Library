@@ -1,22 +1,22 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import type { 
-  UserProfile, 
-  IPFSConfig, 
+import type {
+  UserProfile,
+  IPFSConfig,
   WalletConnectionState
-} from '@owc/shared';
-import { 
-  encryptProfile, 
-  uploadToIPFS, 
+} from '@amdtel/shared';
+import {
+  encryptProfile,
+  uploadToIPFS,
   generateUserId,
-  formatCardanoBalance 
-} from '@owc/shared';
+  formatCardanoBalance
+} from '@amdtel/shared';
 import { Address } from '@emurgo/cardano-serialization-lib-browser';
 // Polyfill Buffer for browser if needed
 // @ts-ignore
 import { Buffer } from 'buffer';
 
-@customElement('owc-login')
+@customElement('amdtel-login')
 export class OWCLoginComponent extends LitElement {
   @property({ type: String })
   ipfsGateway = 'https://ipfs.io';
@@ -48,194 +48,127 @@ export class OWCLoginComponent extends LitElement {
 
   constructor() {
     super();
-    console.log('FILE WATCHING TEST at:', new Date().toISOString());
     this.ipfsConfig = {
       gateway: this.ipfsGateway,
       apiKey: this.ipfsApiKey
     };
   }
 
-  static override styles = css`
-    :host {
-      display: block;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: var(--owc-text-color, #333);
-      background: var(--owc-bg-color, #fff);
-    }
-
-    .login-container {
-      max-width: 400px;
-      margin: 0 auto;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      background: var(--owc-card-bg, #fff);
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .header h2 {
-      margin: 0 0 0.5rem 0;
-      color: var(--owc-primary-color, #2563eb);
-      font-size: 1.5rem;
-    }
-
-    .header p {
-      margin: 0;
-      color: var(--owc-text-secondary, #666);
-      font-size: 0.9rem;
-    }
-
-    .wallet-button {
-      width: 100%;
-      padding: 1rem;
-      margin: 0.5rem 0;
-      border: 2px solid var(--owc-border-color, #e5e7eb);
-      border-radius: 8px;
-      background: var(--owc-button-bg, #fff);
-      color: var(--owc-button-text-color, #333);
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    .wallet-button:hover {
-      border-color: var(--owc-primary-color, #2563eb);
-      background: var(--owc-button-hover-bg, #f8fafc);
-    }
-
-    .wallet-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .wallet-icon {
-      width: 24px;
-      height: 24px;
-    }
-
-    .error-message {
-      color: var(--owc-error-color, #dc2626);
-      background: var(--owc-error-bg, #fef2f2);
-      padding: 0.75rem;
-      border-radius: 6px;
-      margin: 1rem 0;
-      font-size: 0.9rem;
-    }
-
-    .success-message {
-      color: var(--owc-success-color, #059669);
-      background: var(--owc-success-bg, #f0fdf4);
-      padding: 0.75rem;
-      border-radius: 6px;
-      margin: 1rem 0;
-      font-size: 0.9rem;
-    }
-
-    .profile-form {
-      margin-top: 1rem;
-    }
-
-    .form-group {
-      margin-bottom: 1rem;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-      color: var(--owc-text-color, #333);
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid var(--owc-border-color, #e5e7eb);
-      border-radius: 6px;
-      font-size: 1rem;
-      transition: border-color 0.2s ease;
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: var(--owc-primary-color, #2563eb);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-
-    .submit-button {
-      width: 100%;
-      padding: 1rem;
-      background: var(--owc-primary-color, #2563eb);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-
-    .submit-button:hover {
-      background: var(--owc-primary-hover, #1d4ed8);
-    }
-
-    .submit-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .wallet-info {
-      background: var(--owc-info-bg, #f0f9ff);
-      padding: 1rem;
-      border-radius: 8px;
-      margin: 1rem 0;
-    }
-
-    .wallet-info h3 {
-      margin: 0 0 0.5rem 0;
-      color: var(--owc-primary-color, #2563eb);
-    }
-
-    .wallet-info p {
-      margin: 0.25rem 0;
-      font-size: 0.9rem;
-    }
-
-    .disconnect-button {
-      background: var(--owc-danger-color, #dc2626);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .disconnect-button:hover {
-      background: var(--owc-danger-hover, #b91c1c);
-    }
-
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-  `;
+  static override styles = [
+    // Minimal, variable-based CSS
+    css`
+      :host {
+        display: block;
+        color: var(--gray-8);
+        background: var(--surface-1);
+        border-radius: var(--radius-3);
+      }
+      .login-container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 2rem;
+        border-radius: var(--radius-3);
+        box-shadow: var(--shadow-2, 0 4px 6px rgba(0,0,0,0.1));
+        background: var(--surface-2);
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      .header h2 {
+        margin: 0 0 0.5rem 0;
+        color: var(--indigo-7);
+        font-size: 1.5rem;
+      }
+      .header p {
+        margin: 0;
+        color: var(--gray-6);
+        font-size: 0.9rem;
+      }
+      .wallet-button {
+        width: 100%;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        border: 2px solid var(--gray-3);
+        border-radius: var(--radius-2);
+        background: var(--surface-1);
+        color: var(--gray-8);
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: box-shadow 0.2s;
+      }
+      .wallet-button:hover {
+        border-color: var(--indigo-7);
+        background: var(--surface-2);
+      }
+      .wallet-button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .wallet-icon {
+        width: 24px;
+        height: 24px;
+      }
+      .error-message {
+        color: var(--red-7);
+        background: var(--red-0);
+        padding: 0.75rem;
+        border-radius: var(--radius-2);
+        margin: 1rem 0;
+        font-size: 0.9rem;
+      }
+      .success-message {
+        color: var(--green-7);
+        background: var(--green-0);
+        padding: 0.75rem;
+        border-radius: var(--radius-2);
+        margin: 1rem 0;
+        font-size: 0.9rem;
+      }
+      .wallet-info {
+        background: var(--blue-0);
+        padding: 1rem;
+        border-radius: var(--radius-2);
+        margin: 1rem 0;
+      }
+      .wallet-info h3 {
+        margin: 0 0 0.5rem 0;
+        color: var(--indigo-7);
+      }
+      .wallet-info p {
+        margin: 0.25rem 0;
+        font-size: 0.9rem;
+      }
+      .disconnect-button {
+        background: var(--red-7);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-2);
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+      .disconnect-button:hover {
+        background: var(--red-8);
+      }
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    `
+  ];
 
   override render() {
     if (this.connectionState.connected) {
@@ -271,15 +204,15 @@ export class OWCLoginComponent extends LitElement {
         </button>
 
         <div style="text-align: center; margin-top: 1rem;">
-          <p style="font-size: 0.8rem; color: var(--owc-text-secondary, #666); margin-bottom: 0.5rem;">
+          <p style="font-size: 0.8rem; color: var(--amdtel-text-secondary, #666); margin-bottom: 0.5rem;">
             Supported wallets:
           </p>
           <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-            <a href="https://www.lace.io/" target="_blank" rel="noopener noreferrer" style="color: var(--owc-primary-color, #2563eb); text-decoration: none; font-size: 0.8rem;">Lace</a>
-            <a href="https://namiwallet.io/" target="_blank" rel="noopener noreferrer" style="color: var(--owc-primary-color, #2563eb); text-decoration: none; font-size: 0.8rem;">Nami</a>
-            <a href="https://eternl.io/" target="_blank" rel="noopener noreferrer" style="color: var(--owc-primary-color, #2563eb); text-decoration: none; font-size: 0.8rem;">Eternl</a>
-            <a href="https://flint-wallet.com/" target="_blank" rel="noopener noreferrer" style="color: var(--owc-primary-color, #2563eb); text-decoration: none; font-size: 0.8rem;">Flint</a>
-            <a href="https://yoroi-wallet.com/" target="_blank" rel="noopener noreferrer" style="color: var(--owc-primary-color, #2563eb); text-decoration: none; font-size: 0.8rem;">Yoroi</a>
+            <a href="https://www.lace.io/" target="_blank" rel="noopener noreferrer" style="color: var(--amdtel-primary-color, #2563eb); text-decoration: none; font-size: 0.8rem;">Lace</a>
+            <a href="https://namiwallet.io/" target="_blank" rel="noopener noreferrer" style="color: var(--amdtel-primary-color, #2563eb); text-decoration: none; font-size: 0.8rem;">Nami</a>
+            <a href="https://eternl.io/" target="_blank" rel="noopener noreferrer" style="color: var(--amdtel-primary-color, #2563eb); text-decoration: none; font-size: 0.8rem;">Eternl</a>
+            <a href="https://flint-wallet.com/" target="_blank" rel="noopener noreferrer" style="color: var(--amdtel-primary-color, #2563eb); text-decoration: none; font-size: 0.8rem;">Flint</a>
+            <a href="https://yoroi-wallet.com/" target="_blank" rel="noopener noreferrer" style="color: var(--amdtel-primary-color, #2563eb); text-decoration: none; font-size: 0.8rem;">Yoroi</a>
           </div>
         </div>
       </div>
@@ -512,13 +445,13 @@ export class OWCLoginComponent extends LitElement {
 
       // Encrypt profile with wallet address as password
       const encryptedProfile = await encryptProfile(profile, this.connectionState.address);
-      
+
       // Upload to IPFS
       const cid = await uploadToIPFS(encryptedProfile, this.ipfsConfig);
 
       // Store CID in localStorage for demo purposes
       // In production, you might want to store this on-chain or in a database
-      localStorage.setItem(`owc_profile_${userId}`, cid);
+      localStorage.setItem(`amdtel_profile_${userId}`, cid);
 
       // Dispatch success event
       this.dispatchEvent(new CustomEvent('profile-saved', {

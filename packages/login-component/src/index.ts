@@ -1,1 +1,1 @@
-export { OWCLoginComponent } from './login-component.js'; 
+export * from './login-component'; 

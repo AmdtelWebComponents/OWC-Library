@@ -1,5 +1,5 @@
 {
-  "name": "@owc/shared",
+  "name": "@amdtel/shared",
   "version": "0.1.0",
   "description": "Shared utilities and types for OWC components",
   "type": "module",

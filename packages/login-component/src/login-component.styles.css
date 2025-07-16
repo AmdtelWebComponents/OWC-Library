@@ -1,0 +1,130 @@
+@import "https://unpkg.com/open-props";
+@import "https://unpkg.com/open-props/normalize.min.css";
+
+:host {
+  display: block;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  color: var(--gray-8);
+  background: var(--surface-1);
+}
+
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: var(--size-fluid-3);
+  border-radius: var(--radius-3);
+  box-shadow: var(--shadow-2);
+  background: var(--surface-2);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--size-6);
+}
+
+.header h2 {
+  margin: 0 0 var(--size-2) 0;
+  color: var(--indigo-7);
+  font-size: var(--font-size-4);
+}
+
+.header p {
+  margin: 0;
+  color: var(--gray-6);
+  font-size: var(--font-size-1);
+}
+
+.wallet-button {
+  width: 100%;
+  padding: var(--size-3);
+  margin: var(--size-2) 0;
+  border: var(--border-size-2) solid var(--gray-3);
+  border-radius: var(--radius-2);
+  background: var(--surface-1);
+  color: var(--gray-8);
+  font-size: var(--font-size-2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-2);
+  transition: box-shadow 0.2s;
+}
+
+.wallet-button:hover {
+  border-color: var(--indigo-7);
+  background: var(--surface-2);
+}
+
+.wallet-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.wallet-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.error-message {
+  color: var(--red-7);
+  background: var(--red-0);
+  padding: var(--size-2);
+  border-radius: var(--radius-2);
+  margin: var(--size-3) 0;
+  font-size: var(--font-size-1);
+}
+
+.success-message {
+  color: var(--green-7);
+  background: var(--green-0);
+  padding: var(--size-2);
+  border-radius: var(--radius-2);
+  margin: var(--size-3) 0;
+  font-size: var(--font-size-1);
+}
+
+.wallet-info {
+  background: var(--blue-0);
+  padding: var(--size-3);
+  border-radius: var(--radius-2);
+  margin: var(--size-3) 0;
+}
+
+.wallet-info h3 {
+  margin: 0 0 var(--size-2) 0;
+  color: var(--indigo-7);
+}
+
+.wallet-info p {
+  margin: var(--size-1) 0;
+  font-size: var(--font-size-1);
+}
+
+.disconnect-button {
+  background: var(--red-7);
+  color: white;
+  border: none;
+  padding: var(--size-2) var(--size-4);
+  border-radius: var(--radius-2);
+  cursor: pointer;
+  font-size: var(--font-size-1);
+}
+
+.disconnect-button:hover {
+  background: var(--red-8);
+}
+
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+} 

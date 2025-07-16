@@ -16,16 +16,16 @@ A comprehensive library of web components built with Lit, following Open Web Com
 
 ### Available Components
 
-- **`owc-login`**: Cardano wallet login component with IPFS profile storage
+- **`amdtel-login`**: Cardano wallet login component with IPFS profile storage
 - More components coming soon...
 
 ### Planned Components
 
-- `owc-wallet-info`: Display wallet information and balance
-- `owc-transaction-form`: Create and sign Cardano transactions
-- `owc-nft-gallery`: Display and manage Cardano NFTs
-- `owc-ipfs-uploader`: File upload to IPFS with encryption
-- `owc-cardano-chart`: Interactive Cardano blockchain data visualization
+- `amdtel-wallet-info`: Display wallet information and balance
+- `amdtel-transaction-form`: Create and sign Cardano transactions
+- `amdtel-nft-gallery`: Display and manage Cardano NFTs
+- `amdtel-ipfs-uploader`: File upload to IPFS with encryption
+- `amdtel-cardano-chart`: Interactive Cardano blockchain data visualization
 
 ## 🛠️ Setup & Installation
 
@@ -76,17 +76,17 @@ A comprehensive library of web components built with Lit, following Open Web Com
   </script>
 </head>
 <body>
-  <owc-login 
+  <amdtel-login 
     ipfs-gateway="https://ipfs.io"
     theme="light"
-  ></owc-login>
+  ></amdtel-login>
 
   <script>
-    document.querySelector('owc-login').addEventListener('wallet-connected', (event) => {
+    document.querySelector('amdtel-login').addEventListener('wallet-connected', (event) => {
       console.log('Wallet connected:', event.detail);
     });
 
-    document.querySelector('owc-login').addEventListener('profile-saved', (event) => {
+    document.querySelector('amdtel-login').addEventListener('profile-saved', (event) => {
       console.log('Profile saved:', event.detail);
     });
   </script>
@@ -99,27 +99,27 @@ A comprehensive library of web components built with Lit, following Open Web Com
 ```html
 <style>
   :root {
-    --owc-primary-color: #3b82f6;
-    --owc-bg-color: #f8fafc;
-    --owc-card-bg: #ffffff;
-    --owc-text-color: #1f2937;
-    --owc-border-color: #e5e7eb;
+    --amdtel-primary-color: #3b82f6;
+    --amdtel-bg-color: #f8fafc;
+    --amdtel-card-bg: #ffffff;
+    --amdtel-text-color: #1f2937;
+    --amdtel-border-color: #e5e7eb;
   }
 
   .dark-theme {
-    --owc-primary-color: #60a5fa;
-    --owc-bg-color: #1f2937;
-    --owc-card-bg: #374151;
-    --owc-text-color: #f9fafb;
-    --owc-border-color: #4b5563;
+    --amdtel-primary-color: #60a5fa;
+    --amdtel-bg-color: #1f2937;
+    --amdtel-card-bg: #374151;
+    --amdtel-text-color: #f9fafb;
+    --amdtel-border-color: #4b5563;
   }
 </style>
 
-<owc-login 
+<amdtel-login 
   ipfs-gateway="https://gateway.pinata.cloud"
   ipfs-api-key="your-pinata-api-key"
   theme="dark"
-></owc-login>
+></amdtel-login>
 ```
 
 ### React Integration
@@ -152,7 +152,7 @@ function LoginPage() {
   }, []);
 
   return (
-    <owc-login
+    <amdtel-login
       ref={loginRef}
       ipfs-gateway="https://ipfs.io"
       theme="light"

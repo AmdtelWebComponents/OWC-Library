@@ -28,6 +28,8 @@
     "experimentalDecorators": true,
     "useDefineForClassFields": false
   },
-  "include": ["packages/**/*"],
+  "include": [
+    "packages/**/*"
+  ],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 } 

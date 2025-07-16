@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
-import { OWCLoginComponent } from '@owc/login-component';
+import '@amdtel/login-component';
 
-const meta: Meta<OWCLoginComponent> = {
+const meta: Meta<any> = {
   title: 'Components/Login Component',
-  component: 'owc-login',
+  component: 'amdtel-login',
   parameters: {
     layout: 'centered',
   },
@@ -30,7 +30,7 @@ const meta: Meta<OWCLoginComponent> = {
 };
 
 export default meta;
-type Story = StoryObj<OWCLoginComponent>;
+type Story = StoryObj<any>;
 
 export const Default: Story = {
   args: {},

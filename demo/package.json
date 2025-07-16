@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@owc/login-component": "file:../login-component",
-    "@owc/shared": "file:../shared"
+    "@amdtel/shared": "file:../shared"
   },
   "devDependencies": {
     "vite": "^5.0.0"

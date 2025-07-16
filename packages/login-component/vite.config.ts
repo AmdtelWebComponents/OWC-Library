@@ -15,6 +15,7 @@ export default defineConfig({
   },
   // Build configuration for library
   build: {
+    target: "esnext",
     outDir: '../../dist/packages/login-component',
     lib: {
       entry: 'src/index.ts',
@@ -33,7 +34,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@owc/shared': resolve(__dirname, '../shared/src/index.ts')
+      '@amdtel/shared': resolve(__dirname, '../shared/src/index.ts')
     }
   },
   plugins: [

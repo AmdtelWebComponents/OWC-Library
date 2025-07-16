@@ -5,7 +5,7 @@ import { resolve } from 'path';
 export default defineConfig({
   resolve: {
     alias: {
-      '@owc/shared': resolve(__dirname, 'src/index.ts')
+      '@amdtel/shared': resolve(__dirname, 'src/index.ts')
     }
   },
   server: {

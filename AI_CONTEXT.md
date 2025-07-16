@@ -1,5 +1,12 @@
 # AI Development Context - OWC Library
 
+## Recent Progress (July 2025)
+- **Wallet Address Display**: Login component now displays Cardano wallet addresses in bech32 format, matching the Lace wallet UI. Handles both hex and base64 encodings from all major wallets (Lace, Nami, Eternl, etc.).
+- **Lit Event Handler Fix**: Fixed a bug where the Create Profile button caused a runtime error due to incorrect event handler assignment. Now uses a function for @click.
+- **Debug Output Cleanup**: Removed unnecessary debug console logs and UI output for a cleaner user experience.
+- **Wasm Support**: Added vite-plugin-wasm to the login component's Vite config to support WebAssembly imports required by cardano-serialization-lib-browser.
+- **Testing**: All features tested and working as expected as of this commit.
+
 ## Project Overview
 
 **OWC Library** is a comprehensive web components library built with Lit, designed for decentralized applications using Cardano blockchain and IPFS. The project follows Open Web Components best practices and uses a monorepo structure with Lerna and Nx.
@@ -79,7 +86,7 @@ npm run build:watch
 
 ## Component Details
 
-### Login Component (`owc-login`)
+### Login Component (`amdtel-login`)
 **Location**: `packages/login-component/src/login-component.ts`
 
 **Features**:
@@ -101,10 +108,10 @@ npm run build:watch
 
 **Usage**:
 ```html
-<owc-login 
+<amdtel-login 
   ipfs-gateway="https://ipfs.io"
   theme="light"
-></owc-login>
+></amdtel-login>
 ```
 
 ### Shared Utilities
@@ -154,9 +161,9 @@ npm run build:watch
 
 ### Immediate Tasks
 1. **Add More Components**:
-   - `owc-wallet-info`: Display wallet information
-   - `owc-transaction-form`: Create and sign transactions
-   - `owc-nft-gallery`: NFT display and management
+   - `amdtel-wallet-info`: Display wallet information
+   - `amdtel-transaction-form`: Create and sign transactions
+   - `amdtel-nft-gallery`: NFT display and management
 
 2. **Enhance Existing Components**:
    - Add more wallet support
