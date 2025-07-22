@@ -21,7 +21,8 @@
         "storybook": "nx run storybook:serve",
         "build-storybook": "nx run storybook:build",
         "publish": "lerna publish",
-        "clean": "nx reset && lerna clean"
+        "clean": "rm -rf node_modules packages/*/node_modules demo/node_modules dist packages/*/dist demo/dist package-lock.json pnpm-lock.yaml yarn.lock",
+        "postclean": "npm install && npx nx reset"
     },
     "devDependencies": {
         "@nx/eslint-plugin": "^18.0.0",

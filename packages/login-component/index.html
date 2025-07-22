@@ -7,162 +7,456 @@
   <link rel="stylesheet" href="https://unpkg.com/open-props"/>
   <link rel="stylesheet" href="https://unpkg.com/open-props/normalize.min.css"/>
   <style>
+    /* Base styles using Open Props */
+    :root {
+      /* Theme variables for better control */
+      --theme-bg: var(--surface-1);
+      --theme-text: var(--text-1);
+      --theme-surface: var(--surface-2);
+      --theme-border: var(--surface-3);
+      --theme-primary: var(--primary-6);
+      --theme-primary-hover: var(--primary-7);
+    }
+
+    /* Dark theme overrides */
+    [data-theme="dark"] {
+      --theme-bg: var(--gray-9);
+      --theme-text: var(--gray-1);
+      --theme-surface: var(--gray-8);
+      --theme-border: var(--gray-7);
+      --theme-primary: var(--primary-5);
+      --theme-primary-hover: var(--primary-6);
+    }
+
     body {
       margin: 0;
       padding: var(--size-fluid-3);
-      font-family: var(--font-sans, system-ui, sans-serif);
-      background: var(--surface-1);
-      color: var(--gray-8);
+      font-family: var(--font-sans);
+      background: var(--theme-bg);
+      color: var(--theme-text);
+      line-height: var(--font-lineheight-3);
+      transition: background-color var(--ease-2) var(--speed-2), color var(--ease-2) var(--speed-2);
     }
+
+    /* Layout container using CSS Grid */
     .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .header {
-      text-align: center;
-      margin-bottom: var(--size-7);
-    }
-    .header h1 {
-      color: var(--indigo-7);
-      margin-bottom: var(--size-2);
-    }
-    .header p {
-      color: var(--gray-6);
-      margin: 0;
-    }
-    .demo-section {
-      background: var(--surface-2);
-      padding: var(--size-fluid-3);
-      border-radius: var(--radius-3);
-      box-shadow: var(--shadow-2);
-      margin-bottom: var(--size-7);
-    }
-    .demo-section h2 {
-      margin-top: 0;
-      color: var(--indigo-7);
-    }
-    .controls {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      gap: var(--size-8);
+      max-width: var(--size-content-3);
+      margin: 0 auto;
+      padding-block-start: var(--size-8);
+    }
+
+    /* Header section */
+    .header {
+      display: grid;
+      gap: var(--size-4);
+      text-align: center;
+      padding-block-end: var(--size-6);
+      border-bottom: var(--border-size-1) solid var(--theme-border);
+    }
+
+    .header h1 {
+      margin: 0;
+      color: var(--theme-primary);
+      font-size: var(--font-size-6);
+      font-weight: var(--font-weight-7);
+      line-height: var(--font-lineheight-1);
+    }
+
+    .header p {
+      margin: 0;
+      color: var(--text-2);
+      font-size: var(--font-size-4);
+      line-height: var(--font-lineheight-3);
+    }
+
+    /* Demo sections using CSS Grid */
+    .demo-section {
+      display: grid;
+      gap: var(--size-4);
+      background: var(--theme-surface);
+      padding: var(--size-fluid-4);
+      border-radius: var(--radius-4);
+      box-shadow: var(--shadow-3);
+      border: var(--border-size-1) solid var(--theme-border);
+      transition: background-color var(--ease-2) var(--speed-2), border-color var(--ease-2) var(--speed-2);
+    }
+
+    .demo-section h2 {
+      margin: 0;
+      color: var(--theme-primary);
+      font-size: var(--font-size-5);
+      font-weight: var(--font-weight-6);
+      line-height: var(--font-lineheight-2);
+    }
+
+    .demo-section p {
+      margin: 0;
+      color: var(--text-2);
+      font-size: var(--font-size-3);
+      line-height: var(--font-lineheight-4);
+    }
+
+    /* Mode selector */
+    .mode-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--size-4);
+      margin-top: var(--size-4);
+    }
+
+    .mode-option {
+      display: grid;
       gap: var(--size-3);
-      margin-top: var(--size-3);
+      padding: var(--size-4);
+      border: var(--border-size-1) solid var(--surface-4);
+      border-radius: var(--radius-3);
+      background: var(--surface-1);
+      cursor: pointer;
+      transition: all var(--ease-2) var(--speed-2);
     }
-    .control-group {
-      display: flex;
-      flex-direction: column;
+
+    .mode-option:hover {
+      border-color: var(--theme-primary);
+      background: var(--surface-2);
+      transform: translateY(-1px);
     }
-    .control-group label {
-      margin-bottom: var(--size-2);
-      font-weight: var(--font-weight-5);
+
+    .mode-option.active {
+      border-color: var(--theme-primary);
+      background: var(--primary-1);
     }
-    .control-group select,
-    .control-group input {
-      padding: var(--size-2);
-      border: var(--border-size-1) solid var(--gray-3);
-      border-radius: var(--radius-2);
+
+    .mode-option h3 {
+      margin: 0;
+      color: var(--text-1);
+      font-size: var(--font-size-3);
+      font-weight: var(--font-weight-6);
+    }
+
+    .mode-option p {
+      margin: 0;
+      color: var(--text-2);
       font-size: var(--font-size-2);
+      line-height: var(--font-lineheight-4);
     }
+
+    /* Header bar demo */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--size-3) var(--size-4);
+      background: var(--surface-2);
+      border: var(--border-size-1) solid var(--surface-3);
+      border-radius: var(--radius-3);
+      margin-top: var(--size-4);
+    }
+
+    .header-bar .logo {
+      font-weight: var(--font-weight-6);
+      color: var(--theme-primary);
+      font-size: var(--font-size-3);
+    }
+
+    /* Theme toggle button using Open Props */
     .theme-toggle {
       position: fixed;
-      top: var(--size-3);
-      right: var(--size-3);
-      background: var(--indigo-7);
-      color: white;
-      border: none;
-      padding: var(--size-2) var(--size-4);
-      border-radius: var(--radius-2);
+      top: var(--size-4);
+      right: var(--size-4);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--size-2);
+      padding: var(--size-3) var(--size-4);
+      background: var(--theme-primary);
+      color: var(--primary-1);
+      border: var(--border-size-1) solid transparent;
+      border-radius: var(--radius-3);
+      font-size: var(--font-size-2);
+      font-weight: var(--font-weight-5);
       cursor: pointer;
+      transition: all var(--ease-2) var(--speed-2);
+      box-shadow: var(--shadow-2);
+      z-index: 1000;
     }
-    .dark-theme {
-      background: var(--gray-9);
-      color: var(--gray-1);
+
+    .theme-toggle:hover {
+      background: var(--theme-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-3);
+    }
+
+    .theme-toggle:active {
+      transform: translateY(0);
+    }
+
+    .theme-toggle svg {
+      width: var(--size-4);
+      height: var(--size-4);
+    }
+
+    /* Code styling */
+    code {
+      background: var(--surface-3);
+      color: var(--text-1);
+      padding: var(--size-1) var(--size-2);
+      border-radius: var(--radius-1);
+      font-size: var(--font-size-1);
+      font-family: var(--font-mono);
+    }
+
+    /* Development info grid */
+    .dev-info {
+      display: grid;
+      gap: var(--size-2);
+    }
+
+    .dev-info p {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--size-2) 0;
+      border-bottom: var(--border-size-1) solid var(--surface-3);
+    }
+
+    .dev-info p:last-child {
+      border-bottom: none;
+    }
+
+    .dev-info strong {
+      color: var(--text-1);
+      font-weight: var(--font-weight-6);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--size-fluid-2);
+      }
+
+      .container {
+        gap: var(--size-6);
+        padding-block-start: var(--size-6);
+      }
+
+      .header h1 {
+        font-size: var(--font-size-5);
+      }
+
+      .demo-section {
+        padding: var(--size-fluid-3);
+      }
+
+      .mode-selector {
+        grid-template-columns: 1fr;
+      }
+
+      .theme-toggle {
+        top: var(--size-3);
+        right: var(--size-3);
+        padding: var(--size-2) var(--size-3);
+        font-size: var(--font-size-1);
+      }
+
+      .dev-info p {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--size-1);
+      }
+
+      .header-bar {
+        flex-direction: column;
+        gap: var(--size-3);
+        text-align: center;
+      }
+    }
+
+    /* Animation for theme transition */
+    * {
+      transition: background-color var(--ease-2) var(--speed-2), 
+                  color var(--ease-2) var(--speed-2), 
+                  border-color var(--ease-2) var(--speed-2);
     }
   </style>
 </head>
 <body>
-  <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <svg class="sun-icon" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
+    </svg>
+    <span class="theme-text">Light</span>
+  </button>
   
   <div class="container">
     <div class="header">
       <h1>Login Component Development</h1>
-      <p>Edit the component source and see changes instantly!</p>
+      <p>Refactored to focus solely on wallet connection with two display modes</p>
     </div>
 
     <div class="demo-section">
-      <h2>Component Preview</h2>
-      <p>This is the login component in development mode. Make changes to the source files and see them reflected here instantly.</p>
+      <h2>Component Modes</h2>
+      <p>Choose between full mode (with info and supported wallets) or simple mode (just a button):</p>
       
-      <!-- Login Component -->
-      <amdtel-login 
-        id="login-component"
-        ipfs-gateway="https://ipfs.io"
-        theme="light"
-      ></amdtel-login>
-    </div>
-
-    <div class="demo-section">
-      <h2>Component Controls</h2>
-      <p>Test different configurations:</p>
-      
-      <div class="controls">
-        <div class="control-group">
-          <label for="ipfs-gateway">IPFS Gateway:</label>
-          <select id="ipfs-gateway" onchange="updateComponent()">
-            <option value="https://ipfs.io">IPFS.io (Public)</option>
-            <option value="https://gateway.pinata.cloud">Pinata Gateway</option>
-            <option value="https://dweb.link">dweb.link</option>
-          </select>
+      <div class="mode-selector">
+        <div class="mode-option active" onclick="setMode('full')">
+          <h3>Full Mode</h3>
+          <p>Complete interface with wallet information, supported wallets list, and detailed connection status.</p>
         </div>
-        
-        <div class="control-group">
-          <label for="ipfs-api-key">API Key (optional):</label>
-          <input 
-            type="text" 
-            id="ipfs-api-key" 
-            placeholder="Enter API key"
-            onchange="updateComponent()"
-          >
+        <div class="mode-option" onclick="setMode('simple')">
+          <h3>Simple Mode</h3>
+          <p>Minimal button interface perfect for header bars or compact layouts.</p>
         </div>
       </div>
     </div>
 
     <div class="demo-section">
+      <h2>Component Preview</h2>
+      <p>This is the refactored login component. It now focuses solely on wallet connection and uses a global state manager.</p>
+      
+      <!-- Login Component -->
+      <amdtel-login 
+        id="login-component"
+        theme="light"
+        mode="full"
+      ></amdtel-login>
+    </div>
+
+    <div class="demo-section">
+      <h2>Header Bar Demo</h2>
+      <p>Simple mode in action - perfect for navigation headers:</p>
+      
+      <div class="header-bar">
+        <div class="logo">Amdtel App</div>
+        <amdtel-login 
+          id="header-login"
+          theme="light"
+          mode="simple"
+        ></amdtel-login>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>State Management</h2>
+      <p>The component now uses a global state manager. When you connect/disconnect in one component, all other instances update automatically.</p>
+      
+      <div class="dev-info">
+        <p><strong>State Manager:</strong> <code>@amdtel/shared/state-manager</code></p>
+        <p><strong>Global State:</strong> <span id="connection-status">Disconnected</span></p>
+        <p><strong>Wallet Address:</strong> <span id="wallet-address">None</span></p>
+        <p><strong>Network:</strong> <span id="network-info">None</span></p>
+        <p><strong>Balance:</strong> <span id="wallet-balance">None</span></p>
+      </div>
+    </div>
+
+    <div class="demo-section">
       <h2>Development Info</h2>
-      <p><strong>Source files:</strong> <code>packages/login-component/src/</code></p>
-      <p><strong>Main component:</strong> <code>login-component.ts</code></p>
-      <p><strong>Port:</strong> 3001</p>
-      <p><strong>Hot reload:</strong> Enabled - changes to source files will automatically refresh this page</p>
+      <div class="dev-info">
+        <p><strong>Source files:</strong> <code>packages/login-component/src/</code></p>
+        <p><strong>Main component:</strong> <code>login-component.ts</code></p>
+        <p><strong>State manager:</strong> <code>packages/shared/src/state-manager.ts</code></p>
+        <p><strong>Development port:</strong> <code>3001</code></p>
+        <p><strong>Hot reload:</strong> <span style="color: var(--green-6);">✓ Enabled</span></p>
+        <p><strong>Build system:</strong> <code>Vite + TypeScript</code></p>
+        <p><strong>Design system:</strong> <code>Open Props + Normalize.css</code></p>
+      </div>
     </div>
   </div>
 
   <script type="module">
     // Import the login component directly from source
     import './src/index.ts';
+    import { getStateManager } from '@amdtel/shared';
 
-    // Get the login component element
+    // Get the login component elements
     const loginComponent = document.getElementById('login-component');
+    const headerLogin = document.getElementById('header-login');
+    const themeToggle = document.querySelector('.theme-toggle');
+    const themeText = document.querySelector('.theme-text');
+    const sunIcon = document.querySelector('.sun-icon');
 
-    // Function to toggle theme
-    window.toggleTheme = function() {
-      document.body.classList.toggle('dark-theme');
-      const isDark = document.body.classList.contains('dark-theme');
-      loginComponent.setAttribute('theme', isDark ? 'dark' : 'light');
-    };
+    // Get state manager
+    const stateManager = getStateManager();
 
-    // Function to update component properties
-    window.updateComponent = function() {
-      const gateway = document.getElementById('ipfs-gateway').value;
-      const apiKey = document.getElementById('ipfs-api-key').value;
-      
-      loginComponent.setAttribute('ipfs-gateway', gateway);
-      if (apiKey) {
-        loginComponent.setAttribute('ipfs-api-key', apiKey);
+    // Initialize theme from localStorage or default to light
+    let currentTheme = localStorage.getItem('amdtel-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    loginComponent.setAttribute('theme', currentTheme);
+    headerLogin.setAttribute('theme', currentTheme);
+    updateThemeUI(currentTheme);
+
+    // Subscribe to wallet state changes
+    stateManager.subscribe((state) => {
+      updateStateDisplay(state);
+    });
+
+    function updateStateDisplay(state) {
+      const statusEl = document.getElementById('connection-status');
+      const addressEl = document.getElementById('wallet-address');
+      const networkEl = document.getElementById('network-info');
+      const balanceEl = document.getElementById('wallet-balance');
+
+      if (state.connected) {
+        statusEl.textContent = 'Connected';
+        statusEl.style.color = 'var(--green-6)';
+        addressEl.textContent = state.address ? state.address.substring(0, 20) + '...' : 'None';
+        networkEl.textContent = state.networkId === 1 ? 'Mainnet' : 'Testnet';
+        balanceEl.textContent = state.balance ? state.balance : 'None';
       } else {
-        loginComponent.removeAttribute('ipfs-api-key');
+        statusEl.textContent = 'Disconnected';
+        statusEl.style.color = 'var(--red-6)';
+        addressEl.textContent = 'None';
+        networkEl.textContent = 'None';
+        balanceEl.textContent = 'None';
       }
+    }
+
+    // Function to set component mode
+    window.setMode = function(mode) {
+      // Update mode selector UI
+      document.querySelectorAll('.mode-option').forEach(option => {
+        option.classList.remove('active');
+      });
+      event.target.closest('.mode-option').classList.add('active');
+
+      // Update component mode
+      loginComponent.setAttribute('mode', mode);
     };
+
+    // Function to toggle theme with proper Open Props integration
+    window.toggleTheme = function() {
+      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      // Update document and components
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      loginComponent.setAttribute('theme', currentTheme);
+      headerLogin.setAttribute('theme', currentTheme);
+      
+      // Save to localStorage
+      localStorage.setItem('amdtel-theme', currentTheme);
+      
+      // Update UI
+      updateThemeUI(currentTheme);
+    };
+
+    function updateThemeUI(theme) {
+      if (theme === 'dark') {
+        themeText.textContent = 'Dark';
+        sunIcon.innerHTML = `
+          <path d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"/>
+        `;
+      } else {
+        themeText.textContent = 'Light';
+        sunIcon.innerHTML = `
+          <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
+        `;
+      }
+    }
 
     console.log('Login component development environment loaded!');
+    console.log('Theme system: Open Props + Normalize.css');
+    console.log('State management: Global state manager');
+    console.log('Current theme:', currentTheme);
   </script>
 </body>
 </html> 

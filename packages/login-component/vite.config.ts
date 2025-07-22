@@ -40,8 +40,8 @@ export default defineConfig({
   plugins: [
     wasm(),
     dts({
-      insertTypesEntry: true,
-      rollupTypes: true
+      insertTypesEntry: false,
+      rollupTypes: false
     })
   ]
 }); 

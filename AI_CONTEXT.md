@@ -1,5 +1,23 @@
 # AI Development Context - OWC Library
 
+## Latest Refactor & Theming Strategy (July 2025)
+- **Component Prefix:** All custom elements now use the `amdtel-` prefix (was `owc-`).
+- **Component Split:** The Create Profile logic has been moved from the login component to a new `<amdtel-create-profile>` component in its own package.
+- **CSS & Theming:**
+  - All design tokens and theming are managed at the HTML/app level using Open Props and Normalize.css.
+  - Components use only CSS custom properties (variables) for styling; no direct imports of Open Props or Normalize in component code.
+  - No CSS is imported in TypeScript files; all previous CSS module imports and related type declarations have been removed.
+  - Theming and design system integration is now robust and future-proof, ready for Figma or other design tokens.
+- **TypeScript Cleanup:**
+  - Removed obsolete `global.d.ts` and all CSS module type declarations.
+  - Updated all `tsconfig.json` files to remove unnecessary includes.
+  - Ensured all style/type settings are minimal and correct for the new approach.
+- **Build:**
+  - Project builds cleanly with the new style strategy.
+  - All components are ready for further design, theming, and layout improvements.
+
+---
+
 ## Recent Progress (July 2025)
 - **Wallet Address Display**: Login component now displays Cardano wallet addresses in bech32 format, matching the Lace wallet UI. Handles both hex and base64 encodings from all major wallets (Lace, Nami, Eternl, etc.).
 - **Lit Event Handler Fix**: Fixed a bug where the Create Profile button caused a runtime error due to incorrect event handler assignment. Now uses a function for @click.
