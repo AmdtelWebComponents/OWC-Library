@@ -1,14 +1,14 @@
 {
-  "name": "@owc/storybook",
+  "name": "@amdtel/storybook",
   "version": "0.1.0",
-  "description": "Storybook for OWC components",
+  "description": "Storybook for AmdTel components",
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook"
   },
   "dependencies": {
-    "@owc/login-component": "file:../login-component",
+    "@amdtel/login-component": "file:../login-component",
     "@amdtel/shared": "file:../shared"
   },
   "devDependencies": {

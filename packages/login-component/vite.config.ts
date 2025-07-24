@@ -19,7 +19,7 @@ export default defineConfig({
     outDir: '../../dist/packages/login-component',
     lib: {
       entry: 'src/index.ts',
-      name: 'OWCLoginComponent',
+      name: 'AmdTelLoginComponent',
       fileName: 'index',
       formats: ['es']
     },

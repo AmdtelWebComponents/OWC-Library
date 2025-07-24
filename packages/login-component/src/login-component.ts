@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { WalletConnectionState } from '@amdtel/shared';
 import { formatCardanoBalance, getStateManager } from '@amdtel/shared';
@@ -6,26 +6,22 @@ import { Address } from '@emurgo/cardano-serialization-lib-browser';
 // Polyfill Buffer for browser if needed
 // @ts-ignore
 import { Buffer } from 'buffer';
+import { loginComponentStyles } from './login-component.styles';
 
 @customElement('amdtel-login')
-export class OWCLoginComponent extends LitElement {
+export class AmdtelLoginComponent extends LitElement {
   @property({ type: String })
   theme = 'light';
-
   @property({ type: String })
   mode: 'full' | 'simple' = 'full';
 
   @state()
-  private connectionState: WalletConnectionState = {
-    connected: false
-  };
-
+  private connectionState: WalletConnectionState = {connected: false};
   @state()
   private isLoading = false;
-
   @state()
   private errorMessage = '';
-
+  @state()
   private stateManager = getStateManager();
   private unsubscribe: (() => void) | null = null;
 
@@ -49,314 +45,7 @@ export class OWCLoginComponent extends LitElement {
     }
   }
 
-  static override styles = [
-    css`
-      :host {
-        display: block;
-        color: var(--text-1);
-        background: var(--surface-1);
-        border-radius: var(--radius-3);
-        font-family: var(--font-sans);
-        line-height: var(--font-lineheight-3);
-      }
-
-      /* Full mode container */
-      .login-container {
-        display: grid;
-        grid-template-rows: auto 1fr auto;
-        gap: var(--size-6);
-        max-width: var(--size-content-2);
-        margin: 0 auto;
-        padding: var(--size-fluid-4);
-        border-radius: var(--radius-4);
-        box-shadow: var(--shadow-3);
-        background: var(--surface-2);
-        border: var(--border-size-1) solid var(--surface-3);
-      }
-
-      /* Simple mode container */
-      .simple-container {
-        display: inline-block;
-      }
-
-      /* Header section */
-      .header {
-        display: grid;
-        gap: var(--size-3);
-        text-align: center;
-        padding-block-end: var(--size-4);
-        border-bottom: var(--border-size-1) solid var(--surface-3);
-      }
-
-      .header h2 {
-        margin: 0;
-        color: var(--text-1);
-        font-size: var(--font-size-5);
-        font-weight: var(--font-weight-6);
-        line-height: var(--font-lineheight-2);
-      }
-
-      .header p {
-        margin: 0;
-        color: var(--text-2);
-        font-size: var(--font-size-3);
-        line-height: var(--font-lineheight-3);
-      }
-
-      /* Main content area */
-      .content {
-        display: grid;
-        gap: var(--size-4);
-        align-content: start;
-      }
-
-      /* Wallet button with modern styling */
-      .wallet-button {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        align-items: center;
-        gap: var(--size-3);
-        width: 100%;
-        padding: var(--size-4);
-        border: var(--border-size-2) solid var(--surface-4);
-        border-radius: var(--radius-3);
-        background: var(--surface-1);
-        color: var(--text-1);
-        font-size: var(--font-size-3);
-        font-weight: var(--font-weight-5);
-        cursor: pointer;
-        transition: all var(--ease-2) var(--speed-2);
-        text-decoration: none;
-        text-align: left;
-      }
-
-      .wallet-button:hover:not(:disabled) {
-        border-color: var(--primary-6);
-        background: var(--surface-2);
-        box-shadow: var(--shadow-2);
-        transform: translateY(-2px);
-      }
-
-      .wallet-button:active:not(:disabled) {
-        transform: translateY(0);
-      }
-
-      .wallet-button:disabled {
-        opacity: var(--opacity-5);
-        cursor: not-allowed;
-        transform: none;
-      }
-
-      .wallet-icon {
-        width: var(--size-5);
-        height: var(--size-5);
-        color: var(--primary-6);
-      }
-
-      /* Connected state button */
-      .wallet-button.connected {
-        background: var(--green-2);
-        border-color: var(--green-6);
-        color: var(--green-11);
-      }
-
-      .wallet-button.connected:hover {
-        background: var(--green-3);
-        border-color: var(--green-7);
-        transform: translateY(-1px);
-      }
-
-      .wallet-button.connected .wallet-icon {
-        color: var(--green-7);
-      }
-
-      /* Simple mode button */
-      .simple-button {
-        display: inline-flex;
-        align-items: center;
-        gap: var(--size-2);
-        padding: var(--size-3) var(--size-4);
-        border: var(--border-size-1) solid var(--surface-4);
-        border-radius: var(--radius-2);
-        background: var(--surface-1);
-        color: var(--text-1);
-        font-size: var(--font-size-2);
-        font-weight: var(--font-weight-5);
-        cursor: pointer;
-        transition: all var(--ease-2) var(--speed-2);
-        text-decoration: none;
-        white-space: nowrap;
-      }
-
-      .simple-button:hover:not(:disabled) {
-        border-color: var(--primary-6);
-        background: var(--surface-2);
-        transform: translateY(-1px);
-      }
-
-      .simple-button.connected {
-        background: var(--green-2);
-        border-color: var(--green-6);
-        color: var(--green-11);
-      }
-
-      .simple-button.connected:hover {
-        background: var(--green-3);
-        border-color: var(--green-7);
-      }
-
-      /* Message styling */
-      .message {
-        display: grid;
-        gap: var(--size-2);
-        padding: var(--size-4);
-        border-radius: var(--radius-3);
-        font-size: var(--font-size-2);
-        line-height: var(--font-lineheight-4);
-      }
-
-      .error-message {
-        color: var(--red-11);
-        background: var(--red-2);
-        border: var(--border-size-1) solid var(--red-6);
-      }
-
-      .success-message {
-        color: var(--green-11);
-        background: var(--green-2);
-        border: var(--border-size-1) solid var(--green-6);
-      }
-
-      /* Wallet info card */
-      .wallet-info {
-        display: grid;
-        gap: var(--size-3);
-        background: var(--blue-2);
-        padding: var(--size-4);
-        border-radius: var(--radius-3);
-        border: var(--border-size-1) solid var(--blue-6);
-        word-break: break-word;
-        overflow-wrap: anywhere;
-      }
-
-      .wallet-info h3 {
-        margin: 0;
-        color: var(--blue-11);
-        font-size: var(--font-size-4);
-        font-weight: var(--font-weight-6);
-      }
-
-      .wallet-info p {
-        margin: 0;
-        font-size: var(--font-size-2);
-        line-height: var(--font-lineheight-4);
-        color: var(--blue-12);
-        word-break: break-all;
-        overflow-wrap: anywhere;
-      }
-      .wallet-info .address {
-        font-family: var(--font-mono, monospace);
-        font-size: var(--font-size-2);
-        word-break: break-all;
-        overflow-wrap: anywhere;
-      }
-
-      /* Loading spinner */
-      .loading {
-        display: inline-block;
-        width: var(--size-4);
-        height: var(--size-4);
-        border: var(--border-size-2) solid var(--surface-4);
-        border-radius: 50%;
-        border-top-color: currentColor;
-        animation: spin var(--speed-3) linear infinite;
-      }
-
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
-
-      /* Footer section */
-      .footer {
-        display: grid;
-        gap: var(--size-3);
-        padding-block-start: var(--size-4);
-        border-top: var(--border-size-1) solid var(--surface-3);
-        text-align: center;
-      }
-
-      .footer p {
-        margin: 0;
-        font-size: var(--font-size-1);
-        color: var(--text-3);
-        line-height: var(--font-lineheight-4);
-      }
-
-      .wallet-links {
-        display: flex;
-        justify-content: center;
-        gap: var(--size-4);
-        flex-wrap: wrap;
-      }
-
-      .wallet-link {
-        color: var(--primary-6);
-        text-decoration: none;
-        font-size: var(--font-size-1);
-        transition: color var(--ease-2) var(--speed-2);
-      }
-
-      .wallet-link:hover {
-        color: var(--primary-7);
-        text-decoration: underline;
-      }
-
-      /* Responsive design */
-      @media (max-width: 768px) {
-        .login-container {
-          margin: var(--size-2);
-          padding: var(--size-fluid-3);
-        }
-
-        .wallet-links {
-          gap: var(--size-3);
-        }
-      }
-
-      /* Dark theme overrides */
-      :host([theme="dark"]) {
-        color: var(--gray-1);
-        background: var(--gray-9);
-      }
-
-      :host([theme="dark"]) .login-container {
-        background: var(--gray-8);
-        border-color: var(--gray-7);
-      }
-
-      :host([theme="dark"]) .wallet-button {
-        background: var(--gray-8);
-        border-color: var(--gray-6);
-        color: var(--gray-1);
-      }
-
-      :host([theme="dark"]) .wallet-button:hover:not(:disabled) {
-        background: var(--gray-7);
-        border-color: var(--primary-5);
-      }
-
-      :host([theme="dark"]) .simple-button {
-        background: var(--gray-8);
-        border-color: var(--gray-6);
-        color: var(--gray-1);
-      }
-
-      :host([theme="dark"]) .simple-button:hover:not(:disabled) {
-        background: var(--gray-7);
-        border-color: var(--primary-5);
-      }
-    `
-  ];
+  static override styles = [loginComponentStyles];
 
   override render() {
     if (this.mode === 'simple') {

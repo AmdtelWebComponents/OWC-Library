@@ -20,7 +20,7 @@ export default defineConfig({
     outDir: '../../dist/packages/shared',
     lib: {
       entry: 'src/index.ts',
-      name: 'OWCShared',
+      name: 'AmdTelShared',
       fileName: 'index',
       formats: ['es']
     },

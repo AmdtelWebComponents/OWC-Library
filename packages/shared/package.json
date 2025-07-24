@@ -1,7 +1,7 @@
 {
   "name": "@amdtel/shared",
   "version": "0.1.0",
-  "description": "Shared utilities and types for OWC components",
+  "description": "Shared utilities and types for AmdTel components",
   "type": "module",
   "main": "../../dist/packages/shared/index.js",
   "module": "../../dist/packages/shared/index.js",

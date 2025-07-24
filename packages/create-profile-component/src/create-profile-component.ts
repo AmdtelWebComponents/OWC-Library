@@ -95,7 +95,7 @@ export class AmdtelCreateProfileComponent extends LitElement {
     `
   ];
 
-  render() {
+  override render() {
     return html`
       <div class="profile-form">
         ${this.errorMessage ? html`<div class="error-message">${this.errorMessage}</div>` : ''}
